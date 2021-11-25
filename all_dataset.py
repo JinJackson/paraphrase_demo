@@ -2,6 +2,7 @@ from torch.utils.data import Dataset, DataLoader
 import numpy as np
 
 
+# 读取数据
 def readDataFromFile(data_file):
     datas = []
     with open(data_file, 'r', encoding='utf-8') as reader:
@@ -19,6 +20,7 @@ class TrainData(Dataset):
         self.tokenizer = tokenizer
         self.model_type = model_type
 
+    # 转化为BERT需要的输入(input_ids, token_type_ids, attention_mask)
     def __getitem__(self, item):
         data = self.datas[item]
         query1, query2, label = data[0], data[1], int(data[2])
@@ -27,7 +29,7 @@ class TrainData(Dataset):
                                                     max_length=self.max_length,
                                                     truncation=True,
                                                     padding='max_length')
-        input_ids  = np.array(tokenzied_dict['input_ids'])
+        input_ids = np.array(tokenzied_dict['input_ids'])
         attention_mask = np.array(tokenzied_dict['attention_mask'])
         if 'roberta' in self.model_type:
             return input_ids, attention_mask, np.array([label])

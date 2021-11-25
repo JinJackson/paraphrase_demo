@@ -4,16 +4,19 @@ import math
 import sys
 
 
+# sigmoid函数用于预测
 def sigmoid(x):
     return 1 / (1 + pow(math.e, -x))
 
 
+# 载入模型
 def load_model(model_path):
     model = BertMatchModel.from_pretrained(model_path)
     tokenizer = BertTokenizer.from_pretrained(model_path)
     return model, tokenizer
 
 
+# 将输入的文本转换为模型需要的输入
 def convert_input(text1, text2, tokenizer):
     max_length = 256
     tokenized_dict = tokenizer.encode_plus(text=text1,
@@ -43,7 +46,7 @@ def predict(model_path, text1, text2):
 
 
 if __name__ == '__main__':
-    print('start')
+
     # 需要预测的两个文本
     text1 = sys.argv[1]
     text2 = sys.argv[2]
@@ -51,6 +54,7 @@ if __name__ == '__main__':
     # 加载的训练好的模型路径
     model_path = sys.argv[3]
 
+    # 输出预测的概率和结果，大于0.5判True，小于0.5判负
     probability, result = predict(model_path=model_path,
                                   text1=text1,
                                   text2=text2)
