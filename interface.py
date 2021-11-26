@@ -46,17 +46,19 @@ def predict(model_path, text1, text2):
 
 
 if __name__ == '__main__':
+    try:
+        # 需要预测的两个文本
+        text1 = sys.argv[1]
+        text2 = sys.argv[2]
 
-    # 需要预测的两个文本
-    text1 = sys.argv[1]
-    text2 = sys.argv[2]
+        # 加载的训练好的模型路径
+        model_path = sys.argv[3]
 
-    # 加载的训练好的模型路径
-    model_path = sys.argv[3]
+        # 输出预测的概率和结果，大于0.5判True，小于0.5判负
+        probability, result = predict(model_path=model_path,
+                                      text1=text1,
+                                      text2=text2)
 
-    # 输出预测的概率和结果，大于0.5判True，小于0.5判负
-    probability, result = predict(model_path=model_path,
-                                  text1=text1,
-                                  text2=text2)
-
-    print("您输入的两个文本为复述的概率为%.2f, 本AI认为结果为%s" % (probability * 100, str(result)))
+        print("您输入的两个文本为复述的概率为%.2f%%, 本AI认为结果为%s" % (probability * 100, str(result)))
+    except Exception:
+        print('輸入有誤')
